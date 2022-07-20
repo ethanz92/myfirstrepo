@@ -1,0 +1,21 @@
+* {
+    font-family: helvetica;
+}
+
+section.showcase>.text>h1,
+section.showcase>.text>h2 {
+    text-transform: uppercase;
+}
+
+/* 文件变长变大后用这样的定义来准确定位 */
+section.showcase>header>.logo {
+    text-transform: uppercase;
+}
+
+section.showcase>header>.toggle {
+    width: 60px;
+    height: 60px;
+    background: url('src/menu-4-fill.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}

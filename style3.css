@@ -1,0 +1,66 @@
+* {
+    font-family: helvetica;
+}
+
+/* .info {
+    display: flex;
+    color: black;
+    background-color: white;
+} */
+
+/* ul.info {
+
+}
+
+div.info {
+
+}
+
+ul.info li {
+
+} */
+
+/* choose the immediate children of ul.info. color doesn't work because it will be inherited*/
+ul.info>li {
+    /* list-style: none */
+}
+
+/* choose the 1st child of li under li under ul.info */
+ul.info>li li:nth-child(1) {
+    /* list-style: none; */
+}
+
+ol li a {
+    text-decoration: none;
+}
+
+ol li a[target='_blank'] {
+    color: green;
+}
+
+ol li a[href="https://www.google.com/"] {
+    background-color: aqua;
+}
+
+/* 包含选择器 */
+ol li a[href*="google"] {
+    color: pink;
+}
+
+/* 开头选择器 */
+/* ol li a[href^="https"] {
+    color: darkblue;
+/* } */
+
+/* 结尾选择器 */
+/* 和 */
+ol li a[href$=".com.au/"][href*="google"] {
+    font-style: italic;
+}
+
+/* 或 */
+ol li a[href$=".com.au/"],
+ol li a[href*="google"] {
+    font-style: italic;
+}
+
