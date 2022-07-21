@@ -1,21 +1,218 @@
-* {
-    font-family: helvetica;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* industry中会先在这里定义好各种需要使用的颜色或者格式方便下面的代码进行调用。网页默认的字体大小是16px。 */
+:root {
+    --overlay-color: #03a9f4;
+    --background-color: #000000;
+    --font-color: #fff;
+    --menu-width: 300px;
 }
 
-section.showcase>.text>h1,
-section.showcase>.text>h2 {
-    text-transform: uppercase;
+* {
+    margin: 0;
+    padding: 0;
+    /* border box才能实现视窗范围内换行 */
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
+
+/* absolute是绝对位置，比如.showcase下定义absolute，位置就会跟着上一级，即body的位置。用left right之类再改动位置，默认左和上最优先。 */
+/* absolute上面加一个relative的position就告诉了下面的absolute依据谁定位。（即找到上一级非static的位置）如果不写relative showcase的话，absolute就会找到body */
+/* static位置是默认位置，左和上都是0，这时候写right和bottom都没用因为static优先。需要用absolute position来放在右边或者下面 */
+
+.showcase {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* width这里也是指上一级的100%。这里的上一级就是body，html里定义了body的width是viewport所以100%就是100%viewport */
+    width: 100%;
+    height: 100%;
+    /* padding顺序4个值上右下左，3个值上，左右，下，2个值上下，左右 */
+    padding: 40px 100px;
+    /* z轴表示前后的相对位置，一般写99或者9999来确保顶层 */
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-transform: uppercase;
+    /* var可以用来引入上面定义过的颜色，当然直接写颜色也可以 */
+    background-color: var(--background-color);
+    color: var(--font-color);
+    transition: 0.5s;
+}
+
+/* .showcase header{
+    position: absolute;
+    right: 0;
+    bottom:0;
+} */
 
 /* 文件变长变大后用这样的定义来准确定位 */
+/* section.showcase>.text>h1,
+section.showcase>.text>h2,
 section.showcase>header>.logo {
     text-transform: uppercase;
+} */
+
+/* 两个class权重高于一个class 这段通过js实现 */
+.showcase.active {
+    right: var(--menu-width);
+    width: calc(100% - var(--menu-width));
 }
 
-section.showcase>header>.toggle {
+.showcase header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toggle {
     width: 60px;
     height: 60px;
     background: url('src/menu-4-fill.svg');
     background-repeat: no-repeat;
+    background-size: 30px;
     background-position: center;
+    cursor: pointer;
+    /* invert用来反转logo的颜色 */
+    filter: invert(1);
+    transition: 0.5s;
+}
+
+.toggle.active {
+    background-image: url('src/close-line.svg');
+}
+
+.showcase video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    /* 因为背景是黑色所以调透明度就可以变暗一些 */
+    opacity: 0.8;
+}
+
+.showcase .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--overlay-color);
+    mix-blend-mode: overlay;
+    z-index: -1;
+    opacity: 0.4;
+}
+
+/* 用mix blend还可以实现多重滤镜功能 */
+/* .overlay2 {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    top: 25%;
+    left: 25%;
+    background: rgb(0, 128, 0);
+    mix-blend-mode: overlay;
+} */
+
+.text h1 {
+    /* rem是相对root里定义size的五倍，如果没有定义，rem就是默认大小16px(r=root),em是针对现在这里的font size，所以这里1em就是5rem */
+    font-size: 5rem;
+    font-weight: 800;
+    line-height: 1em;
+}
+
+.text h2 {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1em;
+}
+
+.text p {
+    font-size: 1.1rem;
+    margin: 20px 0;
+    max-width: 700px;
+}
+
+.text a {
+    display: inline-block;
+    font-size: 1rem;
+    background-color: var(--font-color);
+    padding: 10px 30px;
+    text-transform: uppercase;
+    color: var(--background-color);
+    margin-top: 10px;
+    text-decoration: none;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.2s;
+    /* transition如果放下面，就没有延迟效果了，因为需要先延迟，再触发hover的效果 */
+}
+
+/* hover时激发特性 */
+.text a:hover {
+    letter-spacing: 6px;
+}
+
+.social {
+    display: flex;
+}
+
+.social li {
+    list-style: none;
+}
+
+.social li a {
+    display: inline-block;
+    filter: invert(1);
+}
+
+.social li a:not(last-child) {
+    margin-right: 20px;
+    transition: 0.5s;
+}
+
+.social li a:hover {
+    transform: translateY(-10px);
+}
+
+.menu {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--menu-width);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu ul {
+    list-style: none;
+}
+
+.menu li a {
+    color: var(--overlay-color);
+    text-decoration: none;
+    font-size: 24px;
+}
+
+/* 如果宽度小于798px时，如手机屏幕，就会调用下面的设定 */
+@media(max-width: 798px) {
+    .showcase {
+        padding: 40px;
+    }
+
+    .text h1 {
+        font-size: 3rem;
+    }
+
+    .text h2 {
+        font-size: 2rem;
+    }
 }
