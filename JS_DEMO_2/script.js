@@ -348,6 +348,11 @@ const set = new Set()
     console.log(sortList); //排序
 }
 
+{
+    const newSet = new Set('a', 'b', 'c')
+    console.log(newSet);
+}
+
 // TODO: === v.s. ==
 
 {
