@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+body {
+  font-family: "roboto", sans-serif;
+}
+
+h1 {
+  color: #4181ee;
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  max-width: 300px;
+  min-height: 250px;
+  background-color: aquamarine;
+  box-sizing: border-box;
+  color: white;
+  padding: 30px;
+  border-radius: 3px;
+  margin: 20px;
+  box-shadow: rgb(50 50 93 / 25%) 0px 30px 60px -12px,
+    rgb(0 0 0 / 30%) 0px 18px 36px -18px;
+}
+
+.cardImageContainer img {
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+/* 如果没有wrapper，wrap过后container的center就会让wrap的元素去中间而不是左边 */
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card:nth-child(2) {
+  background-color: #4181ee;
+}
+.card:last-child {
+  background-color: #673ab7;
+}
+.cardContent {
+  width: 100%;
+}
+.cardTitle {
+  margin-bottom: 20px;
+}
+.cardInfo {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  /* 下面的flex1实现同样效果 */
+}
+.text{
+    flex: 1;
+}
+.card_price {
+  background-color: #555;
+  color: #fff;
+  padding: 5px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  border: none;
+}
+.card:hover {
+  transform: translateY(-8px);
+}

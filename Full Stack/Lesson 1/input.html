@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- input 是个单标签，type属性不同指定不同的空间类型 -->
+    <form method="post" action="xxx.php">
+      user name:<input
+        type="text"
+        name="username"
+        placeholder="please enter your name"
+        autocomplete="off"
+        disabled
+      />
+      <br />
+      <!-- 看不见输入的密码 -->
+      password:<input type="password" name="pwd" />
+      <br />
+      <!-- 单选按钮必须有相同的name，才可以实现多选一 -->
+      gender: male
+      <input type="radio" name="sex" value="male" /> female
+      <input type="radio" name="sex" value="female" />
+      <br />
+      hobby: eating <input type="checkbox" name="hobby" /> sleeping
+      <input type="checkbox" name="hobby" /> eating
+      <input type="checkbox" name="hobby" />
+      <br />
+      <!-- reset还原表单到默认状态 -->
+      <input type="reset" value="reset" />
+      <input type="button" value="button" /><br />
+      upload file <input type="file" /><br />
+      <input type="submit" value="submit" />
+      <br />
+    </form>
+  </body>
+</html>
