@@ -1,0 +1,110 @@
+body {
+  font-size: 15px;
+  color: blue;
+  background-color: green;
+}
+
+//nesting
+
+ul {
+  font-size: 16px;
+  li {
+    list-style: none;
+  }
+}
+
+//变量 （- _ 默认是一样的但尽量用一样的符号）
+
+$primary-color: #555;
+
+div.box {
+  background-color: $primary-color;
+}
+
+h1.page-header {
+  border: 1px solid $primary-color;
+}
+
+//定义多个值
+
+$primary-border: 1px solid $primary-color;
+
+h2.page-header {
+  border: $primary-border;
+}
+
+//nesting
+
+.nav {
+  height: 100px;
+  ul {
+    margin: 0;
+    li {
+      padding: 5px;
+    }
+    a {
+      display: block;
+      color: #000;
+      &:hover {
+        background-color: blue;
+        color: #000;
+      }
+    }
+  }
+}
+
+//嵌套属性
+.nav {
+  border: 1px solid #000 {
+    left: 0;
+    right: 0;
+  }
+}
+
+//mixin 也可以包含其他mixin或使用嵌套
+@mixin alert {
+  color: #000;
+  a {
+    color: pink;
+  }
+}
+
+.alert-warning {
+  @include alert;
+}
+
+//mixin添加参数
+@mixin alert2($text-color, $background) {
+  color: $text-color;
+  background-color: $background;
+}
+
+.alert-info {
+  @include alert2(#333, green);
+}
+
+//@extend 继承：让一个选择器继承另一个选择器所有的样式，提高代码复用
+
+.button {
+  padding: 15px;
+  width: 200px;
+  height: 30px;
+}
+.button-info {
+  @extend .button;
+  background-color: yellow;
+}
+
+//partials @import
+//import的文件要用_开头
+
+@import "base";
+
+//@each
+
+@each $animal in cat,dog,pig {
+    .#{$animal}-icon {
+        background-image: url('/images/#{$animal}.png');
+    }
+}
+
