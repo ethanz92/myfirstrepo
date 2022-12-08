@@ -1,0 +1,20 @@
+* {
+    margin: 0;
+}
+
+body {
+    background-color: rgb(74, 74, 74);
+    padding: 50px;
+}
+
+.container {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, 480px);
+    padding: 10px;
+}
+
+img {
+    max-width: 480px;
+    min-width: 240px;
+}
