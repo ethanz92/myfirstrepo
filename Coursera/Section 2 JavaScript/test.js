@@ -33,5 +33,28 @@
 // letterFinder(2, 22);
 // letterFinder("cat", "c");
 
-new String('plum') === new String('plum')
-new String('plum') == new String('plum')
+// console.log(new String('plum') === new String('plum'));
+// console.log(new String('plum') == new String('plum'));
+
+// console.log("abcd".match(/d/)); // null
+// console.log("abcd".match(/a/)); // ['a', index: 0, input: 'abcd', groups: undefined]
+
+// const m = new RegExp('d');
+// console.log("abcd".match(m));
+
+class Car {
+  constructor(color, speed) {
+    this.color = color;
+    this.speed = speed;
+  }
+  turboOn() {
+    console.log("turbo is on!");
+  }
+  getProto() {
+    console.log(Object.getPrototypeOf(this));
+  }
+}
+
+const car = new Car("red", 120);
+console.log(Object.getPrototypeOf(car));
+car.getProto();
