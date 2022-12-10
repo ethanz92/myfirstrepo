@@ -33,6 +33,5 @@
 // letterFinder(2, 22);
 // letterFinder("cat", "c");
 
-const a = 6;
-a = 7;
-console.log(a);
+new String('plum') === new String('plum')
+new String('plum') == new String('plum')
