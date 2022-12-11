@@ -1,0 +1,23 @@
+{
+  "name": "myfirstrepo",
+  "version": "1.0.0",
+  "description": "## first commit test",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethanz92/myfirstrepo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ethanz92/myfirstrepo/issues"
+  },
+  "homepage": "https://github.com/ethanz92/myfirstrepo#readme",
+  "devDependencies": {
+    "jest": "^29.3.1"
+  }
+}
