@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      // var、let、const区别总结
+      
+      //ATTN不用var的原因：
+
+      //>>>var有变量提升 (hoisting)
+      console.log(foo); //undefined
+      var foo = 'abc'; //提前访问变量
+      // let和const有暂时性死区，不能提前调用
+      console.log(voo); 
+      let voo = 'abc';
+
+      //>>>块级作用域 (block scope)
+      var num = 20;
+      function fn() {
+        var num = 30; //如果把这里的var拿掉，num依然是全局变量，最后clg会变30
+      }
+      fn();
+      console.log(num); //20
+
+      {
+        const num = 20;
+        let foo = 10;
+      }
+      console.log(num, foo); //not defined，let和const有block scope
+
+      //>>>重复声明 (redeclare)，let，const都不可以重复声明
+      var foo2 = 1;
+      var foo2 = 2;
+      console.log(foo2);
+
+      //修改声明的变量
+      // const一旦声明必须赋值不能null占位
+      // const声明后不能修改
+
+      //ATTN ES6新引入了数据类型：Symbol, BigInt
+
+    </script>
+  </head>
+  <body></body>
+</html>
+

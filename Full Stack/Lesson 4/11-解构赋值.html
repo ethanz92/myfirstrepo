@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      // 基础类型解构
+      let [a, b, c] = [1, 2, 3];
+
+      // 对象数组解构
+      let [a2, b2, c2] = [{ name: "1" }, { name: "2" }, { name: "3" }];
+
+      // ...解构
+      let [first, ...rest] = [1, 2, 3, 5];
+      console.log(first); //1
+
+      // 嵌套解构
+      let [a3, [b3], d3] = [1, [2, 3], 4];
+      console.log(a3, b3, d3); // ATTN 1, 2, 4. b3指的是2，是第一项，如果写[b3, b4]就能都读到
+
+      // 解构不成功为undefined
+      // 解构默认赋值
+      let [a4, b4, c4] = [1];
+      console.log(a4, b4, c4); // 1 undefined undefined
+
+
+      // 对象属性解构
+      let { f1, f2 } = { f1: "test1", f2: "test2" };
+      console.log(f1, f2, typeof f1); // test1 test2 string
+    </script>
+  </head>
+  <body></body>
+</html>
