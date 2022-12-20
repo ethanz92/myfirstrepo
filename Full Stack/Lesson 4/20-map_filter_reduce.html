@@ -46,7 +46,7 @@
 
       //get the total score of force users only
       const totalScoreForce = personnel
-        .filter((user) => user.isForceUser == true)
+        .filter((user) => user.isForceUser)
         .map((user) => user.pilotingScore + user.shootingScore)
         .reduce((acc, score) => (acc += score), 0);
       console.log(totalScoreForce);

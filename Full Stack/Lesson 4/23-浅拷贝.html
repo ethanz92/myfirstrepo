@@ -15,7 +15,17 @@
         },
       };
 
+      let newObj = {};
+      Object.assign(newObj, obj);
+      console.log(newObj);
+      newObj.msg.age = 20;
+      console.log(obj); //obj的msg.age也变成20了，说明浅拷贝会影响旧的object
+
       let arr = ["lin", "is", "handsome"];
+
+      const newArr1 = Array.from(arr)
+      const newArr2 = [...arr]
+
     </script>
   </head>
   <body></body>

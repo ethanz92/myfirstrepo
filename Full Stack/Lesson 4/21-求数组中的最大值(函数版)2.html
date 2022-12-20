@@ -30,7 +30,20 @@
       }, {});
       console.log(biggestY);
 
+      //ATTN
+      const biggestY2 = function (arr) {
+        const max = Math.max(...arr.map((item) => item.y));
+        return max;
+      };
+
       // 利用函数求数组 [5,2,99,101,67,77] 中的最大数值。
+
+      //ATTN可以用Math.max的方法
+      const getArrMax2 = function (arr) {
+        const max = Math.max(...arr);
+        return max;
+      };
+
       function getArrMax(arr) {
         // arr 接受一个数组  arr =  [5,2,99,101,67,77]
         var max = arr[0];
