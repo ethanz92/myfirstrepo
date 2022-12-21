@@ -164,7 +164,7 @@ for (let i = 0; i < 3; i++) {
 console.log(i);
 ```
 
-3.
+3. 结果是4行 Index: 4, element: undefined。因为1000毫秒（1秒）后for loop早已结束，此时i已经为4。
 
 ```js
 var arr = [10, 12, 15, 21];
