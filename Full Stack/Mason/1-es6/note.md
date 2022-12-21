@@ -23,9 +23,9 @@ They all used for variable declaration, the main difference is the scope.
 var is function scoped, it means if the variable is declared within a function, it can be accessed within the function. Similarly, if var is used outside of the function, the variable can be accessed in via window object. (in the browser)
 
 ```js
-var apple = 'apple';
+var apple = "apple";
 function foo() {
-  var pear = 'pear';
+  var pear = "pear";
   console.log(apple); // apple
   console.log(pear); // pear
 }
@@ -36,10 +36,10 @@ console.log(pear); // Uncaught ReferenceError: pear is not defined
 #### Re-declare and update
 
 ```js
-var fruit = 'apple';
-var fruit = 'pear';
+var fruit = "apple";
+var fruit = "pear";
 console.log(fruit); // pear
-fruit = 'grape';
+fruit = "grape";
 console.log(fruit); // grape
 ```
 
@@ -47,7 +47,7 @@ console.log(fruit); // grape
 
 ```js
 console.log(fruit); // undefined
-var fruit = 'apple';
+var fruit = "apple";
 ```
 
 equals
@@ -55,16 +55,16 @@ equals
 ```js
 var fruit;
 console.log(fruit); // undefined
-fruit = 'apple';
+fruit = "apple";
 ```
 
 #### Problem
 
 ```js
-var fruit = 'apple';
+var fruit = "apple";
 if (true) {
   // think about this is in another file
-  var fruit = 'pear';
+  var fruit = "pear";
 }
 console.log(fruit); // pear
 ```
@@ -80,9 +80,9 @@ for example:
 let's reuse the example above but replace the keyword with _let_
 
 ```js
-let fruit = 'apple';
+let fruit = "apple";
 if (true) {
-  let fruit = 'pear';
+  let fruit = "pear";
 }
 console.log(fruit); // apple
 ```
@@ -90,9 +90,9 @@ console.log(fruit); // apple
 #### Re-declare and update
 
 ```js
-let fruit = 'apple';
+let fruit = "apple";
 // let fruit = "pear"; // Uncaught SyntaxError: Identifier 'fruit' has already been declared
-fruit = 'grape';
+fruit = "grape";
 console.log(fruit); // grape
 ```
 
@@ -100,7 +100,7 @@ console.log(fruit); // grape
 
 ```js
 console.log(fruit); // Uncaught ReferenceError: Cannot access 'fruit' before initialization
-let fruit = 'apple';
+let fruit = "apple";
 ```
 
 Different to _var_, let is hoisted, but the vairable is not initialized
@@ -112,18 +112,18 @@ Scope and the hoisting is the same as _let_
 #### Re-declare
 
 ```js
-const fruit = 'apple';
+const fruit = "apple";
 // const fruit = "pear"; // Uncaught SyntaxError: Identifier 'fruit' has already been declared
-fruit = 'grape'; // Uncaught TypeError: Assignment to constant variable.
+fruit = "grape"; // Uncaught TypeError: Assignment to constant variable.
 console.log(fruit);
 ```
 
 #### Update
 
 ```js
-const fruit = { name: 'apple', color: 'red' };
+const fruit = { name: "apple", color: "red" };
 // fruit = {name: "apple", color: "green"}; // Uncaught TypeError: Assignment to constant variable.
-fruit.color = 'green';
+fruit.color = "green";
 console.log(fruit); // {name: "apple", color: "green"}
 ```
 
@@ -132,7 +132,7 @@ similar in array
 ```js
 const fruits = [];
 // fruits = ["apple"]; // Error
-fruits.push('apple');
+fruits.push("apple");
 console.log(fruits); // ["apple"]
 ```
 
@@ -144,7 +144,7 @@ console.log(fruit); // Uncaught ReferenceError: fruit is not defined
 
 ### Quiz
 
-1. What's the output of the following code
+1. What's the output of the following code 答案：0,1,2,3，注意 i 会增长到 3
 
 ```js
 var i = 5;
@@ -164,16 +164,19 @@ for (let i = 0; i < 3; i++) {
 console.log(i);
 ```
 
-3. 结果是4行 Index: 4, element: undefined。因为1000毫秒（1秒）后for loop早已结束，此时i已经为4。
+3. 结果是 4 行 Index: 4, element: undefined。因为 1000 毫秒（1 秒）后 for loop 早已结束，此时 i 已经为 4。
+   这里如果把 var 换成 let 就可以解决这个问题。（参看 closure）
 
 ```js
 var arr = [10, 12, 15, 21];
 for (var i = 0; i < arr.length; i++) {
   setTimeout(function () {
-    console.log('Index: ' + i + ', element: ' + arr[i]);
+    console.log("Index: " + i + ", element: " + arr[i]);
   }, 1000);
 }
 ```
+
+如果循环是 1000 个呢？js 是单线程语言，所以一次只能做一件事。当有异步操作存在时（setTimeout）必须要等到 Call stack 上 FEC 为空只剩 GEC 的时候才会执行，在这个例子就意味着 for loop 已经跑完，此时才会开始执行 setTimeout 的 call back function。
 
 ### Conclusion
 
@@ -191,10 +194,10 @@ Extra reading source
 Also named, template literal, string interpolation
 
 ```js
-const name = 'mason';
+const name = "mason";
 const age = 104;
 // es5
-console.log('My name is ' + name + ", and I'm " + age + ' years old');
+console.log("My name is " + name + ", and I'm " + age + " years old");
 
 //es6
 console.log(`My name is ${name}, and I'm ${age} years old`);
@@ -209,10 +212,10 @@ console.log(newArray); // [1, 2, 3, 4]
 ```
 
 ```js
-const fruit = { name: 'apple', color: 'green' };
-let newFruit = { ...fruit, color: 'red' };
+const fruit = { name: "apple", color: "green" };
+let newFruit = { ...fruit, color: "red" };
 console.log(newFruit); // {name: "apple", color: "red"}
-newFruit = { color: 'red', ...fruit };
+newFruit = { color: "red", ...fruit };
 console.log(newFruit); // {color: "green", name: "apple"}
 ```
 
@@ -222,7 +225,7 @@ Object destructuring extracts property from object and assigns it to variables.
 One way would be using the dot notation
 
 ```js
-const fruit = { name: 'apple', color: 'red' };
+const fruit = { name: "apple", color: "red" };
 const name = fruit.name; // apple
 const color = fruit.color; // red
 ```
@@ -230,7 +233,7 @@ const color = fruit.color; // red
 With the new syntax, we don't need to repeatly refer to the `fruit` object
 
 ```js
-const fruit = { name: 'apple', color: 'red' };
+const fruit = { name: "apple", color: "red" };
 const { name, color } = fruit;
 console.log(name); // apple
 console.log(color); // red
@@ -239,7 +242,7 @@ console.log(color); // red
 we can also rename the variable
 
 ```js
-const fruit = { name: 'apple', color: 'red' };
+const fruit = { name: "apple", color: "red" };
 const { name: fruitName, color: fruitColor } = fruit;
 console.log(fruitName); // apple
 console.log(fruitColor); // red
@@ -249,8 +252,8 @@ or destructing an array
 
 ```js
 const fruits = [
-  { name: 'apple', color: 'red' },
-  { name: 'pear', color: 'green' },
+  { name: "apple", color: "red" },
+  { name: "pear", color: "green" },
 ];
 const [apple, pear] = fruits;
 console.log(apple); // {name: "apple", color: "red"}
@@ -270,7 +273,7 @@ console.log(baz); // 3
 ```
 
 ```js
-const [, , third] = ['foo', 'bar', 'baz'];
+const [, , third] = ["foo", "bar", "baz"];
 console.log(third); // "baz"
 ```
 
@@ -284,6 +287,9 @@ console.log(tail); // [2, 3, 4]
 ```js
 const [missing = true] = [];
 console.log(missing); // true
+
+const [missing = false] = [];
+console.log(missing); // false
 ```
 
 ## Default parameters
@@ -332,6 +338,7 @@ A “higher-order function” is a function that accepts functions as parameters
 
 ```js
 const add = function (x, y) {
+  //function expression
   return x + y;
 };
 // vs
@@ -365,15 +372,15 @@ sum(1, 2, logger);
 
 ```js
 setTimeout(function () {
-  console.log('normal function');
+  console.log("normal function");
 }, 1000);
 
 setTimeout(() => {
-  console.log('arrow function');
+  console.log("arrow function");
 }, 1000);
 ```
 
-## Closure
+## Closure 闭包
 
 Closures are everywhere in JS. A closure is when a function has access to its lexical scope even when it is called outside of it. Closures are created every time a function is created, at function creation time.
 
@@ -442,9 +449,9 @@ Commonly used to avoid polluting the global namespace and modules!
 ### quiz
 
 ```js
-var scope = 'global scope';
+var scope = "global scope";
 function checkscope() {
-  var scope = 'local scope';
+  var scope = "local scope";
   function f() {
     return scope;
   }
@@ -454,9 +461,9 @@ checkscope();
 ```
 
 ```js
-var scope = 'global scope';
+var scope = "global scope";
 function checkscope() {
-  var scope = 'local scope';
+  var scope = "local scope";
   function f() {
     return scope;
   }
@@ -579,10 +586,10 @@ calendar.arrow();
 
 ```js
 const object = {
-  message: 'Hello, World!',
+  message: "Hello, World!",
 
   getMessage() {
-    const message = 'Hello, Earth!';
+    const message = "Hello, Earth!";
     return this.message;
   },
 };
@@ -592,7 +599,7 @@ console.log(object.getMessage()); // ??
 
 ```js
 const object = {
-  who: 'World',
+  who: "World",
 
   greet() {
     return `Hello, ${this.who}!`;
@@ -609,7 +616,7 @@ console.log(object.farewell()); // ??
 
 ```js
 const object = {
-  who: 'mason',
+  who: "mason",
   cb() {
     console.log(`Hello, ${this.who}!`);
   },
@@ -625,7 +632,7 @@ object.cb(); // ??
 
 ```js
 const object = {
-  who: 'mason',
+  who: "mason",
   cb() {
     function foo() {
       console.log(`Hello, ${this.who}!`);
@@ -642,15 +649,15 @@ object.cb(); // ??
 ### Manipulation
 
 ```js
-const fruits = ['apple'];
+const fruits = ["apple"];
 
-fruits.push('pear');
+fruits.push("pear");
 console.log(fruits); // ["apple", "pear"]
-fruits.unshift('grape');
+fruits.unshift("grape");
 console.log(fruits); // ["grape", "apple", "pear"]
 // splice(x,y,newAdded)
 // remove y items from index x, and add newAdded
-fruits.splice(1, 1, 'watermelon', 'peach');
+fruits.splice(1, 1, "watermelon", "peach");
 console.log(fruits); // ["grape", "watermelon", "peach", "pear"]
 let fruit = fruits.pop();
 console.log(fruit); // pear
@@ -665,7 +672,7 @@ console.log(fruits); // ["watermelon", "peach"]
 #### for loop
 
 ```js
-const fruits = ['apple', 'pear'];
+const fruits = ["apple", "pear"];
 for (let index = 0; index < fruits.length; index++) {
   const fruit = fruits[index];
   console.log(fruit);
@@ -677,7 +684,7 @@ for (let index = 0; index < fruits.length; index++) {
 #### for...of
 
 ```js
-const fruits = ['apple', 'pear'];
+const fruits = ["apple", "pear"];
 for (let fruit of fruits) {
   console.log(fruit);
 }
@@ -690,7 +697,7 @@ for (let fruit of fruits) {
 #### forEach
 
 ```js
-const fruits = ['apple', 'pear'];
+const fruits = ["apple", "pear"];
 fruits.forEach((fruit) => console.log(fruit));
 // apple
 // pear
@@ -700,7 +707,7 @@ fruits.forEach((fruit) => console.log(fruit));
 ### Map
 
 ```js
-const fruits = ['apple', 'pear'];
+const fruits = ["apple", "pear"];
 const newFruits = fruits.map((fruit) => ({
   name: fruit,
   price: 10,
@@ -734,19 +741,19 @@ console.log(odds); // [1,3,5]
 
 const fruits = [
   {
-    name: 'apple',
-    color: 'red',
+    name: "apple",
+    color: "red",
   },
   {
-    name: 'pear',
-    color: 'green',
+    name: "pear",
+    color: "green",
   },
   {
-    name: 'grape',
-    color: 'green',
+    name: "grape",
+    color: "green",
   },
 ];
-const filteredFruits = fruits.filter((i) => i.color === 'green');
+const filteredFruits = fruits.filter((i) => i.color === "green");
 console.log(filteredFruits);
 // [{name: "pear", color: "green"}, {name: "grape", color: "green"}]
 ```
@@ -754,19 +761,19 @@ console.log(filteredFruits);
 ```js
 const fruits = [
   {
-    name: 'apple',
-    color: 'red',
+    name: "apple",
+    color: "red",
   },
   {
-    name: 'pear',
-    color: 'green',
+    name: "pear",
+    color: "green",
   },
   {
-    name: 'grape',
-    color: 'green',
+    name: "grape",
+    color: "green",
   },
 ];
-const greenFruit = fruits.find((i) => i.color === 'green');
+const greenFruit = fruits.find((i) => i.color === "green");
 console.log(greenFruit);
 // {name: "pear", color: "green"}
 ```
@@ -806,10 +813,10 @@ Classes are a template for creating objects. Classes are in fact functions, clas
 function Person(name) {
   this.name = name;
   this.toString = function () {
-    console.log('name: ' + this.name);
+    console.log("name: " + this.name);
   };
 }
-var mason = new Person('mason');
+var mason = new Person("mason");
 mason.toString(); // name: mason
 ```
 
@@ -822,7 +829,7 @@ class Person {
     console.log(`name: ${this.name}`);
   }
 }
-const mason = new Person('mason');
+const mason = new Person("mason");
 mason.toString(); // name: mason
 ```
 
@@ -838,7 +845,7 @@ class Teacher extends Person {
   }
 }
 
-const mason = new Teacher('mason');
+const mason = new Teacher("mason");
 mason.teach(); // mason is teaching
 mason.toString(); // name: mason -> BUT how?
 ```
@@ -858,7 +865,7 @@ function Pet(name) {
   this.getName = () => this.name;
 }
 
-const cat = new Pet('Fluffy');
+const cat = new Pet("Fluffy");
 
 console.log(cat.getName()); // Fluffy
 
@@ -872,34 +879,34 @@ JS is single threaded, which means it can only execute one command at a time.
 
 ```js
 function foo() {
-  console.log('foo');
+  console.log("foo");
 }
 setTimeout(foo, 1000);
-console.log('hello');
+console.log("hello");
 ```
 
 ```js
 function foo() {
-  console.log('foo');
+  console.log("foo");
 }
 function runFor1Sec() {
   // a for loop or while loop or a heavy computing logic which requires 1 sec to finish
 }
 setTimeout(foo, 1000);
 runFor1Sec();
-console.log('hello');
+console.log("hello");
 ```
 
 ```js
 function foo() {
-  console.log('foo');
+  console.log("foo");
 }
 function runFor1Sec() {
   // a for loop or while loop or a heavy computing logic which requires 1 sec to finish
 }
 setTimeout(foo, 1000);
 runFor1Sec();
-console.log('hello');
+console.log("hello");
 ```
 
 Quiz questions references

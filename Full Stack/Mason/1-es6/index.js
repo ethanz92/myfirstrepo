@@ -6,17 +6,16 @@
 // ES7 -> 2016
 
 // BLOCK
-// const obj = { name: "xxx" }; // object literal
-// for(let i = 0; i < 10; i++) {
+// const obj = { name: "xxx" }; // object literal >>> 这里的{}不构成block scope，只是表示是object
+// for(let i = 0; i < 10; i++) { // >>> 这里for也属于这个{}block的作用域
 // }
 
 // function foo() {
-//     console.log(bar);
+//     console.log(bar); //>>> 这里不存在hoisting因为function没有被call所以bar没有被读取
 // }
-
 // const bar = 1;
-
 // foo();
+
 
 // dot notation
 
