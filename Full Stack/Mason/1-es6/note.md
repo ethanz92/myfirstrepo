@@ -176,7 +176,7 @@ for (var i = 0; i < arr.length; i++) {
 }
 ```
 
-如果循环是 1000 个呢？js 是单线程语言，所以一次只能做一件事。当有异步操作存在时（setTimeout）必须要等到 Call stack 上 FEC 为空只剩 GEC 的时候才会执行，在这个例子就意味着 for loop 已经跑完，此时才会开始执行 setTimeout 的 call back function。
+如果循环是 1000 个呢？js 是单线程语言，所以一次只能做一件事。当有异步操作存在时（setTimeout）必须要等到 Call stack 上 FEC 为空只剩 GEC 的时候才会执行，在这个例子就意味着 for loop 已经跑完，此时才会开始执行 setTimeout 的 call back function。上例即便不 delay（timeout=0），结果也不会变。
 
 ### Conclusion
 
@@ -435,6 +435,10 @@ counter.increment();
 console.log(counter.getCount());
 ```
 
+上面的例子用闭包形成了一个“私有”的模块，counter 现在是一个拥有两个 method 的 object。
+在 global 无法直接读取 counter 的值，只能通过调用 increment 和 getCount 两个 method 对 counter 进行操作和读取。
+实际应用时常常隐藏用户的类型，外部通过闭包的形式访问用户类型，但外部看不见用户类型。
+
 ### IIFEs
 
 Immediately Invoked Function Expressions
@@ -445,6 +449,8 @@ Commonly used to avoid polluting the global namespace and modules!
   // some variable in it's own scope
 })();
 ```
+
+要用一对（）把函数包起来，然后再用（）去 call 函数，这样 js 才知道前面是一个完整的函数并且需要立刻执行。
 
 ### quiz
 
@@ -458,6 +464,7 @@ function checkscope() {
   return f();
 }
 checkscope();
+//local scope
 ```
 
 ```js
@@ -470,6 +477,7 @@ function checkscope() {
   return f;
 }
 checkscope()();
+//local scope
 ```
 
 ```js
@@ -489,11 +497,13 @@ function createCounter() {
 const counter1 = createCounter();
 counter1.increment();
 console.log(counter1.getCount());
+//1
 
 const counter2 = createCounter();
 counter2.increment();
 counter2.increment();
 console.log(counter2.getCount());
+//2
 ```
 
 ## this
@@ -510,6 +520,8 @@ foo(); // window
 ```
 
 ### _this_ keyword in normal functions with bind, call, apply
+
+实际中较少使用，因为代码量大时很容易忘记这些特定的绑定。
 
 ```js
 // a1,a2
@@ -540,21 +552,21 @@ const calendar = {
   nextDay() {
     setTimeout(function () {
       this.currentDay++;
-      console.log(this.currentDay);
-    }); // .bind(this)
+      console.log(this.currentDay); //NaN, this指向的是window因为上下文丢失
+    }); // 解决办法：在setTimeout异步函数后加上.bind(this)，这样this就指向calendar
   },
 };
 calendar.nextDay();
 ```
 
-In arrow function, `this` points to the enclosing lexical context's `this`.
+In arrow function, `this` points to the enclosing lexical context's `this`. 箭头函数不接受 bind, call, apply.
 
 ```js
 const calendar = {
   currentDay: 6,
   nextDay() {
     setTimeout(() => {
-      this.currentDay++;
+      this.currentDay++; //箭头函数的this永远指向它的语义环境(这里是nextDay)的this，注意object的{}不构成一个scope
       console.log(this.currentDay);
     });
   },
@@ -566,15 +578,15 @@ calendar.nextDay();
 const calendar = {
   currentDay: 6,
   normal: function () {
-    console.log(1, this);
+    console.log(1, this); //calendar
     setTimeout(function () {
-      console.log(2, this);
+      console.log(2, this); //window
     });
   },
   arrow: function () {
-    console.log(3, this);
+    console.log(3, this); //calendar
     setTimeout(() => {
-      console.log(4, this);
+      console.log(4, this); //calendar
     });
   },
 };
@@ -594,7 +606,7 @@ const object = {
   },
 };
 
-console.log(object.getMessage()); // ??
+console.log(object.getMessage()); //Hello, World!
 ```
 
 ```js
@@ -610,8 +622,8 @@ const object = {
   },
 };
 
-console.log(object.greet()); // ??
-console.log(object.farewell()); // ??
+console.log(object.greet()); // Hello, World!
+console.log(object.farewell()); // Goodbye, undefined!
 ```
 
 ```js
@@ -626,8 +638,8 @@ function foo(cb) {
   cb();
 }
 
-foo(object.cb); // ??
-object.cb(); // ??
+foo(object.cb); // Hello, undefined!
+object.cb(); // Hello, mason!
 ```
 
 ```js
@@ -641,7 +653,7 @@ const object = {
   },
 };
 
-object.cb(); // ??
+object.cb(); // Hello, undefined! 这里把foo()改成箭头函数就可以返回Hello, mason!
 ```
 
 ## Common array operations
@@ -729,7 +741,7 @@ console.log(sum); // 6
 ```js
 const numbers = [1, 2, 3, 4, 5];
 console.log(numbers.includes(2)); // true
-// Array.some
+// Array.some 得到完整object
 console.log(numbers.indexOf(2)); // 1
 // Array.findIndex
 ```
@@ -799,6 +811,8 @@ console.log(set.has(1)); // false
 console.log(set.size); // 4
 ```
 
+使用 set 快速去重得到新 array：
+
 ```js
 const array = [1, 2, 2, 3, 4, 4];
 const uniqueArray = [...new Set(array)];
@@ -808,6 +822,7 @@ console.log(uniqueArray); // [1, 2, 3, 4]
 ## Basic Classes
 
 Classes are a template for creating objects. Classes are in fact functions, class is only a syntax sugar.
+js 里其实不存在 class，本质上是个 function。我们用这样的 template function 来创建 object。
 
 ```js
 function Person(name) {
@@ -816,14 +831,14 @@ function Person(name) {
     console.log("name: " + this.name);
   };
 }
-var mason = new Person("mason");
+var mason = new Person("mason"); // instance
 mason.toString(); // name: mason
 ```
 
 ```js
 class Person {
   constructor(name) {
-    this.name = name;
+    this.name = name; //需要传参才需要写constructor
   }
   toString() {
     console.log(`name: ${this.name}`);
@@ -838,7 +853,7 @@ mason.toString(); // name: mason
 ```js
 class Teacher extends Person {
   constructor(name) {
-    super(name);
+    super(name); //super是在调用Person的constructor function
   }
   teach() {
     console.log(`${this.name} is teaching`);
@@ -854,7 +869,7 @@ mason.toString(); // name: mason -> BUT how?
 // is mason constructed by Teacher?
 mason instanceof Teacher; // true
 mason instanceof Person; // true
-mason instanceof Object; // true
+mason instanceof Object; // true 所有的class function都extends Object
 ```
 
 ## quiz
@@ -891,23 +906,60 @@ function foo() {
 }
 function runFor1Sec() {
   // a for loop or while loop or a heavy computing logic which requires 1 sec to finish
+  // 堵塞操作 blocking
 }
-setTimeout(foo, 1000);
-runFor1Sec();
-console.log("hello");
+//[1ms]
+setTimeout(foo, 1000); //[2ms]
+runFor1Sec(); //[1002ms]
+// foo is ready
+console.log("hello"); //[1003ms]
 ```
 
-```js
-function foo() {
-  console.log("foo");
-}
-function runFor1Sec() {
-  // a for loop or while loop or a heavy computing logic which requires 1 sec to finish
-}
-setTimeout(foo, 1000);
-runFor1Sec();
-console.log("hello");
-```
+创建环境机制：
+js 在创建函数时只会记录函数以及 reference，并不会 evaluate 函数里有什么
+foo -> fn (ref)
+runFor1Sec -> fn (ref)
+
+call stack:
+[ ]
+[ ]
+[ setTimeout ]
+[ GEC ]
+
+web API:
+timer -> 1s -> foo [2ms]
+
+call stack:
+[ ]
+[ ]
+[ runFor1Sec ] -setTimeout 已执行，清空 [1002ms]
+[ GEC ]
+
+foo is now ready, web API clear, foo enters callback queue:
+callback queue:
+
+- foo
+  call stack 为空后才开始执行 queue
+
+call stack:
+[ ]
+[ ]
+[ console.log ] [1003ms]
+[ GEC ]
+
+call stack:
+[ ]
+[ ]
+[ foo ] [1004ms] foo 从 queue 里移到 call stack 开始执行
+[ GEC ]
+
+////////////
+
+有 promise 的情况，call stack 清空后开始执行 promise queue，promise queue 执行完才开始执行 callback queue
+promise queue 是 microtask queue, callback queue 是 macrotask queue
+
+js 有 event loop 的机制，会不停的询问各个 queue 和 stack 是否为空
+[Event Loop机制的解释](http://latentflip.com/loupe/)
 
 Quiz questions references
 [1](https://dmitripavlutin.com/javascript-this-interview-questions/#question-1-variable-vs-property)

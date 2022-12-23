@@ -202,6 +202,7 @@ a() = bar() => 1
 
 
 
-[1,2,3,4,5]
-splice()
+const arr = [1,2,3,4,5]
+arr.splice(4);
+console.log(arr);
 unshift();
