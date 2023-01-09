@@ -11,6 +11,7 @@ import {
   Select,
   Textarea,
   VStack,
+  Spinner,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import FullScreenSection from "./FullScreenSection";
@@ -18,7 +19,7 @@ import useSubmit from "../hooks/useSubmit";
 import { useAlertContext } from "../context/alertContext";
 
 const LandingSection = () => {
-  const { isLoading, response, submit } = useSubmit();
+  const { isLoadingRef, response, submit } = useSubmit();
   const { onOpen } = useAlertContext();
 
   const formik = useFormik({
@@ -28,7 +29,7 @@ const LandingSection = () => {
       type: "",
       comment: "",
     },
-    onSubmit: (values) => useSubmit(),
+    onSubmit: (values) => submit("", values),
     validationSchema: Yup.object({
       firstName: Yup.string().required("Required"),
       email: Yup.string().required("Required"),
@@ -37,11 +38,35 @@ const LandingSection = () => {
     }),
   });
 
-  const [inputFirstName, setInputFirstName] = useState("");
-  const [blurFirstName, setBlurFirstName] = useState(false);
-  const handleInputChange = (e) => setInputFirstName(e.target.value);
-  const handleBlur = (e) => setBlurFirstName(true);
-  const isErrorFirstName = inputFirstName === "" && blurFirstName;
+  useEffect(() => {
+    console.log(isLoadingRef.current);
+  }, [isLoadingRef.current]);
+
+  useEffect(() => {
+    console.log(response);
+  }, [response]);
+
+  const [input, setInput] = useState({
+    firstName: "",
+    email: "",
+    comment: "",
+  });
+  const [blur, setBlur] = useState({
+    firstNameBlur: false,
+    emailBlur: false,
+    commentBlur: false,
+  });
+  const handleChange = (e) =>
+    setInput((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value };
+    });
+  const handleBlur = (e) =>
+    setBlur((prevState) => {
+      return { ...prevState, [e.target.name + "Blur"]: true };
+    });
+  const isErrorFirstName = input.firstName === "" && blur.firstNameBlur;
+  const isErrorEmail = input.email === "" && blur.emailBlur;
+  const isErrorComment = input.comment === "" && blur.commentBlur;
 
   return (
     <FullScreenSection
@@ -55,23 +80,35 @@ const LandingSection = () => {
           Contact me
         </Heading>
         <Box p={6} rounded="md" w="100%">
-          <form>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              return formik.handleSubmit;
+            }}
+          >
             <VStack spacing={4}>
               <FormControl isInvalid={isErrorFirstName}>
                 <FormLabel htmlFor="firstName">Name</FormLabel>
                 <Input
                   id="firstName"
                   name="firstName"
-                  value={inputFirstName}
-                  onChange={handleInputChange}
+                  value={input.firstName}
+                  onChange={handleChange}
                   onBlur={handleBlur}
                 />
                 <FormErrorMessage>Required</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={false}>
+              <FormControl isInvalid={isErrorEmail}>
                 <FormLabel htmlFor="email">Email Address</FormLabel>
-                <Input id="email" name="email" type="email" />
-                <FormErrorMessage></FormErrorMessage>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={input.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <FormErrorMessage>Required</FormErrorMessage>
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="type">Type of enquiry</FormLabel>
@@ -83,12 +120,28 @@ const LandingSection = () => {
                   <option value="other">Other</option>
                 </Select>
               </FormControl>
-              <FormControl isInvalid={false}>
+              <FormControl isInvalid={isErrorComment}>
                 <FormLabel htmlFor="comment">Your message</FormLabel>
-                <Textarea id="comment" name="comment" height={250} />
-                <FormErrorMessage></FormErrorMessage>
+                <Textarea
+                  id="comment"
+                  name="comment"
+                  height={250}
+                  value={input.comment}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <FormErrorMessage>Required</FormErrorMessage>
               </FormControl>
               <Button type="submit" colorScheme="purple" width="full">
+                {isLoadingRef.current && (
+                  <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="xl"
+                  />
+                )}
                 Submit
               </Button>
             </VStack>
