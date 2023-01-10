@@ -19,7 +19,8 @@ import useSubmit from "../hooks/useSubmit";
 import { useAlertContext } from "../context/alertContext";
 
 const LandingSection = () => {
-  const { isLoadingRef, response, submit } = useSubmit();
+  const { isLoading, response, submit } = useSubmit();
+
   const { onOpen } = useAlertContext();
 
   const formik = useFormik({
@@ -29,44 +30,44 @@ const LandingSection = () => {
       type: "",
       comment: "",
     },
-    onSubmit: (values) => submit("", values),
+    onSubmit: (values) => {
+      console.log("submitted");
+      submit("", values);
+      
+    },
     validationSchema: Yup.object({
       firstName: Yup.string().required("Required"),
       email: Yup.string().required("Required"),
-      type: Yup.string().required("Required"),
+      // type: Yup.string().required("Required"),
       comment: Yup.string().required("Required"),
     }),
   });
 
   useEffect(() => {
-    console.log(isLoadingRef.current);
-  }, [isLoadingRef.current]);
-
-  useEffect(() => {
-    console.log(response);
+    if (response) onOpen(response.type, response.message);
   }, [response]);
 
-  const [input, setInput] = useState({
-    firstName: "",
-    email: "",
-    comment: "",
-  });
-  const [blur, setBlur] = useState({
-    firstNameBlur: false,
-    emailBlur: false,
-    commentBlur: false,
-  });
-  const handleChange = (e) =>
-    setInput((prevState) => {
-      return { ...prevState, [e.target.name]: e.target.value };
-    });
-  const handleBlur = (e) =>
-    setBlur((prevState) => {
-      return { ...prevState, [e.target.name + "Blur"]: true };
-    });
-  const isErrorFirstName = input.firstName === "" && blur.firstNameBlur;
-  const isErrorEmail = input.email === "" && blur.emailBlur;
-  const isErrorComment = input.comment === "" && blur.commentBlur;
+  // const [input, setInput] = useState({
+  //   firstName: "",
+  //   email: "",
+  //   comment: "",
+  // });
+  // const [blur, setBlur] = useState({
+  //   firstNameBlur: false,
+  //   emailBlur: false,
+  //   commentBlur: false,
+  // });
+  // const handleChange = (e) =>
+  //   setInput((prevState) => {
+  //     return { ...prevState, [e.target.name]: e.target.value };
+  //   });
+  // const handleBlur = (e) =>
+  //   setBlur((prevState) => {
+  //     return { ...prevState, [e.target.name + "Blur"]: true };
+  //   });
+  // const isErrorFirstName = input.firstName === "" && blur.firstNameBlur;
+  // const isErrorEmail = input.email === "" && blur.emailBlur;
+  // const isErrorComment = input.comment === "" && blur.commentBlur;
 
   return (
     <FullScreenSection
@@ -83,36 +84,36 @@ const LandingSection = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              return formik.handleSubmit;
+              formik.handleSubmit(e);
             }}
           >
             <VStack spacing={4}>
-              <FormControl isInvalid={isErrorFirstName}>
+              <FormControl isInvalid={formik.errors.firstName}>
                 <FormLabel htmlFor="firstName">Name</FormLabel>
                 <Input
                   id="firstName"
                   name="firstName"
-                  value={input.firstName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  {...formik.getFieldProps("firstName")}
                 />
-                <FormErrorMessage>Required</FormErrorMessage>
+                {formik.touched.firstName && formik.errors.firstName ? (
+                  <FormErrorMessage>{formik.errors.firstName}</FormErrorMessage>
+                ) : null}
               </FormControl>
-              <FormControl isInvalid={isErrorEmail}>
+              <FormControl isInvalid={formik.errors.email}>
                 <FormLabel htmlFor="email">Email Address</FormLabel>
                 <Input
                   id="email"
                   name="email"
                   type="email"
-                  value={input.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  {...formik.getFieldProps("email")}
                 />
-                <FormErrorMessage>Required</FormErrorMessage>
+                {formik.touched.email && formik.errors.email ? (
+                  <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+                ) : null}
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="type">Type of enquiry</FormLabel>
-                <Select id="type" name="type">
+                <Select id="type" name="type" {...formik.getFieldProps("type")}>
                   <option value="hireMe">Freelance project proposal</option>
                   <option value="openSource">
                     Open source consultancy session
@@ -120,29 +121,30 @@ const LandingSection = () => {
                   <option value="other">Other</option>
                 </Select>
               </FormControl>
-              <FormControl isInvalid={isErrorComment}>
+              <FormControl isInvalid={formik.errors.comment}>
                 <FormLabel htmlFor="comment">Your message</FormLabel>
                 <Textarea
                   id="comment"
                   name="comment"
                   height={250}
-                  value={input.comment}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  {...formik.getFieldProps("comment")}
                 />
-                <FormErrorMessage>Required</FormErrorMessage>
+                {formik.touched.comment && formik.errors.comment ? (
+                  <FormErrorMessage>{formik.errors.comment}</FormErrorMessage>
+                ) : null}
               </FormControl>
               <Button type="submit" colorScheme="purple" width="full">
-                {isLoadingRef.current && (
+                {isLoading ? (
                   <Spinner
                     thickness="4px"
                     speed="0.65s"
                     emptyColor="gray.200"
                     color="blue.500"
-                    size="xl"
+                    size="md"
                   />
+                ) : (
+                  "Submit"
                 )}
-                Submit
               </Button>
             </VStack>
           </form>
