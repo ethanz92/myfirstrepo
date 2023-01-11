@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -44,18 +44,43 @@ const Header = () => {
     }
   };
 
+  const [currentY, setCurrentY] = useState(window.scrollY);
+  const [prevY, setPrevY] = useState(0);
+
+  const [boxStyle, setBoxStyle] = useState({
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    translateY: 0,
+    transform: "translateY(0)",
+    transitionProperty: "transform",
+    transitionDuration: ".3s",
+    transitionTimingFunction: "ease-in-out",
+    backgroundColor: "#18181b",
+  });
+
+  useEffect(() => {
+    const handleScroll = (e) => {
+      e.preventDefault();
+      setPrevY(currentY);
+      setCurrentY(window.scrollY);
+      if (prevY < currentY) {
+        setBoxStyle({ ...boxStyle, transform: "translateY(-200px)" });
+      } else {
+        setBoxStyle({ ...boxStyle, transform: "translateY(0)" });
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [currentY]);
+
   return (
-    <Box
-      position="fixed"
-      top={0}
-      left={0}
-      right={0}
-      translateY={0}
-      transitionProperty="transform"
-      transitionDuration=".3s"
-      transitionTimingFunction="ease-in-out"
-      backgroundColor="#18181b"
-    >
+    <Box {...boxStyle}>
       <Box color="white" maxWidth="1280px" margin="0 auto">
         <HStack
           px={16}
