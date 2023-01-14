@@ -3,7 +3,6 @@ import ExpenseForm from "./ExpenseForm";
 
 function NewExpense(props) {
   const onAddNewExpense = (newExpense) => {
-    console.log("From NewExpense: ", newExpense);
     props.addNewExpense(newExpense);
   };
 

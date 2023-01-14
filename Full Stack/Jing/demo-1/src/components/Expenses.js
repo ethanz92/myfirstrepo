@@ -6,15 +6,14 @@ function Expenses(props) {
 
   return (
     <div className="expenses">
-      {expenses.map((expense) => {
-        return (
-          <ExpenseItem
-            date={expense.date}
-            title={expense.title}
-            amount={expense.amount}
-          />
-        );
-      })}
+      {expenses.map((expense) => (
+        <ExpenseItem
+          key={expense.title}
+          date={expense.date}
+          title={expense.title}
+          amount={expense.amount}
+        />
+      ))}
     </div>
   );
 }

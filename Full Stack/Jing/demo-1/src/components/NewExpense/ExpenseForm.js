@@ -3,17 +3,19 @@ import { useState } from "react";
 import { defaultListboxReducer } from "@mui/base";
 
 function ExpenseForm(props) {
-  const [title, setTitle] = useState();
-  const [amount, setAmount] = useState();
-  const [date, setDate] = useState();
+  const [title, setTitle] = useState("");
+  const [amount, setAmount] = useState("");
+  const [date, setDate] = useState("");
 
   function onFormSubmit(e) {
     e.preventDefault();
-      const formData = {
-          title, amount, date
-      };
-      props.addNewExpense(formData)
-      
+    const formData = {
+      title,
+      amount: `$${amount}`,
+      date: new Date(date),
+      //保持数据和App里的expenses object一致
+    };
+    props.onAddNewExpense(formData);
   }
 
   function onInputChangeHandler(e, type) {
